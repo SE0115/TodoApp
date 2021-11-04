@@ -1,9 +1,12 @@
 <template>
   <ul>
     <li
-      v-for="todoEl in todoEls"
+      v-for="todoEl in $store.state.todo.todoEls"
       :key="todoEl">
-      {{ todoEl.title }}
+      <input
+        :id="todoEl.id"
+        type="checkbox" />
+      {{ todoEl.title.split('__@dateSet-expire__Info:')[0] }}
       <button
         class="removeBtn"
         @click="removeTodo(todoEl)">
@@ -14,39 +17,13 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
-    data() {
-        return {
-            todoEls: []
-        }
-    },
     async created() {
-        const { data } = await axios({
-          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
-          method: 'GET',
-          headers: {
-            'content-type': 'application/json',
-            'apikey': 'FcKdtJs202110',
-            'username': 'KimSiEun'
-          }
-        })
-
-        this.todoEls = data
+      await this.$store.dispatch('todo/getTodo')
     },
     methods: {
-      async removeTodo(todoEl) {
-        console.log(todoEl)
-        await axios({
-          url: `https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos/${todoEl.id}`,
-          method: 'DELETE',
-          headers: {
-            'content-type': 'application/json',
-            'apikey': 'FcKdtJs202110',
-            'username': 'KimSiEun'
-          }
-        })
+      async removeTodo(El) {
+        await this.$store.dispatch('todo/removeTodo', El)
       }
     }
     
@@ -54,9 +31,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-* {
-  // border: 1px solid red;
-}
 ul {
   margin: 0 auto;
   margin-top: 20px;

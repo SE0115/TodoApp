@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
     data() {
@@ -24,21 +24,9 @@ export default {
     },
     methods: {
       async addTodo() {
-        await axios({
-          url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-            'apikey': 'FcKdtJs202110',
-            'username': 'KimSiEun'
-          },
-          data: {
-            'title': this.newTodoEl
-          }
-        })
-        console.log(this.newTodoEl)
-        this.newTodoEl=''
-        
+        const addEl = this.newTodoEl
+        await this.$store.dispatch('todo/createTodo', addEl)
+        this.newTodoEl =''
       }
     }
 }
@@ -53,11 +41,9 @@ input {
   width: 80%;
   height: 30px;
   text-align: center;
-  margin: 10px 10px 0 0;
+  font-size: 18px;
+  margin: 20px 10px 0 0;
   border-bottom: 3px solid #bf6c85;
-  &::placeholder {
-    font-size: 18px;
-  }
 }
 .addBtn {
   i {
