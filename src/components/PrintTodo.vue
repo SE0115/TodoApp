@@ -5,8 +5,10 @@
       :key="todoEl">
       <input
         :id="todoEl.id"
-        type="checkbox" />
-      {{ todoEl.title.split('__@dateSet-expire__Info:')[0] }}
+        :checked="todoEl.done"
+        type="checkbox"
+        @change="doneToggle(todoEl)" />
+      <label :for="todoEl.id">{{ todoEl.title.split('__@dateSet-expire__Info:')[0] }}</label>
       <button
         class="removeBtn"
         @click="removeTodo(todoEl)">
@@ -24,9 +26,11 @@ export default {
     methods: {
       async removeTodo(El) {
         await this.$store.dispatch('todo/removeTodo', El)
+      },
+      async doneToggle(El) {
+        await this.$store.dispatch('todo/doneToggle', El)
       }
     }
-    
 }
 </script>
 
@@ -42,6 +46,12 @@ ul {
     font-size: 18px;
     padding: 10px;
     border-radius: 5px;
+    input {
+      margin-right: 10px;
+    }
+    input:checked + label {
+      text-decoration: line-through;
+    }
     .removeBtn {
       display: none;
     }

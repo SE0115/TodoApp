@@ -23,6 +23,10 @@ export default {
         },
         removeTodoEl(state, id) {
             state.todoEls = state.todoEls.filter(El => El.id !== id)
+        },
+        doneToggle(state, todoEl) {
+            const idx = state.todoEls.findIndex(El => El.id === todoEl.id)
+            state.todoEls[idx] = todoEl
         }
     },
     // 액션 메소드 (데이터 수정 권한 x, 비동기)
@@ -65,6 +69,23 @@ export default {
                 }
             })
             commit('removeTodoEl', removeEl.id)
+        },
+        async doneToggle({ commit }, El) {
+            const { data } = await axios({
+                url: `https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos/${El.id}`,
+                method: 'PUT',
+                headers: {
+                  'content-type': 'application/json',
+                  'apikey': 'FcKdtJs202110',
+                  'username': 'KimSiEun'
+                },
+                data: {
+                    'title': El.title,
+                    'done': !El.done,
+                    'order': El.order
+                }
+            })
+            commit('doneToggle', data)
         }
     }
 }
