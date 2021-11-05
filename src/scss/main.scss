@@ -1,11 +1,11 @@
 @import 'reset.scss';
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&display=swap');
-body * {
-    font-family: 'Noto Serif KR', serif;
-}
 
 body {
     margin: 10px;
     padding: 30px;
     border: 3px solid #bf6c85;
+    * {
+        font-family: 'Noto Serif KR', serif;
+    }
 }

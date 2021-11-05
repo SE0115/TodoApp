@@ -14,8 +14,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
-
 export default {
     data() {
         return {
@@ -42,7 +40,7 @@ input {
   height: 30px;
   text-align: center;
   font-size: 18px;
-  margin: 20px 10px 0 0;
+  margin: 20px 10px 20px 0;
   border-bottom: 3px solid #bf6c85;
 }
 .addBtn {

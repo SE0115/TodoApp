@@ -7,8 +7,14 @@ export default {
     }),
     // computed
     getters: {
-        todoEls(state) {
-            return state.todoEls
+        toDoEls(state) {
+            return state.todoEls.filter(El => !El.done)
+        },
+        doneEls(state) {
+            return state.todoEls.filter(El => El.done)
+        },
+        nextOrder(state) {
+            return state.todoEls.length
         }
     },
     // 변이 메소드 (데이터 수정 권한 o)
@@ -24,7 +30,11 @@ export default {
         removeTodoEl(state, id) {
             state.todoEls = state.todoEls.filter(El => El.id !== id)
         },
-        doneToggle(state, todoEl) {
+        // doneToggle(state, todoEl) {
+        //     const idx = state.todoEls.findIndex(El => El.id === todoEl.id)
+        //     state.todoEls[idx] = todoEl
+        // }
+        editTodoEl(state, todoEl) {
             const idx = state.todoEls.findIndex(El => El.id === todoEl.id)
             state.todoEls[idx] = todoEl
         }
@@ -43,7 +53,7 @@ export default {
             })
             commit('assignState', {todoEls: data})
         },
-        async createTodo({ commit }, addEl) {
+        async createTodo({ getters, commit }, addEl) {
             const { data } = await axios({
               url: 'https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos',
               method: 'POST',
@@ -53,7 +63,8 @@ export default {
                 'username': 'KimSiEun'
               },
               data: {
-                'title': addEl
+                'title': addEl,
+                'order': getters.nextOrder
               }
             })
             commit('addTodoEl', data)
@@ -70,7 +81,7 @@ export default {
             })
             commit('removeTodoEl', removeEl.id)
         },
-        async doneToggle({ commit }, El) {
+        async editTodo({ commit }, El) {
             const { data } = await axios({
                 url: `https://asia-northeast3-heropy-api.cloudfunctions.net/api/todos/${El.id}`,
                 method: 'PUT',
@@ -81,11 +92,12 @@ export default {
                 },
                 data: {
                     'title': El.title,
-                    'done': !El.done,
+                    'done': El.done,
                     'order': El.order
                 }
             })
-            commit('doneToggle', data)
+            commit('editTodoEl', data)
         }
+
     }
 }
