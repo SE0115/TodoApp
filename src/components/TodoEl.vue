@@ -10,18 +10,20 @@
     :origin-el="todoEl"
     :edit-mode="editMode"
     @update-mode="updateMode" />
-  <button
-    v-if="!editMode"
-    class="editBtn"
-    @click="editBtn">
-    <i class="far fa-edit"></i>
-  </button>
-  <button
-    v-if="!editMode"
-    class="removeBtn"
-    @click="removeTodo(todoEl)">
-    <i class="fas fa-trash-alt"></i>
-  </button>
+  <div class="utils">
+    <button
+      v-if="!editMode"
+      class="editBtn"
+      @click="editBtn">
+      <i class="far fa-edit"></i>
+    </button>
+    <button
+      v-if="!editMode"
+      class="removeBtn"
+      @click="removeTodo(todoEl)">
+      <i class="fas fa-trash-alt"></i>
+    </button>
+  </div>
 </template>
 
 <script>
@@ -59,7 +61,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style lang="scss" scoped>
 input {
     margin-right: 10px;
 }
@@ -67,7 +69,9 @@ input:checked + label {
     text-decoration: line-through;
     font-style: italic;
 }
-.editBtn, .removeBtn {
+.utils {
+  .editBtn, .removeBtn {
     display: none;
+  }
 }
 </style>

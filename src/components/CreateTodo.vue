@@ -3,7 +3,7 @@
     <input
       v-model="newTodoEl"
       type="text"
-      placeholder="추가 내용 입력 ^^"
+      placeholder="Add todo :)"
       @keyup.enter="addTodo" />
     <button
       class="addBtn"
@@ -22,8 +22,11 @@ export default {
     },
     methods: {
       async addTodo() {
-        const addEl = this.newTodoEl
-        await this.$store.dispatch('todo/createTodo', addEl)
+        this.newTodoEl = this.newTodoEl.trim()
+        if(this.newTodoEl.length !== 0) {
+          const addEl = this.newTodoEl
+          await this.$store.dispatch('todo/createTodo', addEl)
+        }
         this.newTodoEl =''
       }
     }
@@ -41,11 +44,11 @@ input {
   text-align: center;
   font-size: 18px;
   margin: 20px 10px 20px 0;
-  border-bottom: 3px solid #bf6c85;
+  border-bottom: 3px solid #f69698;
 }
 .addBtn {
   i {
-    color: #bf6c85;
+    color: #f69698;
     font-size: 30px;
   }
 }

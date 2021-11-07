@@ -2,17 +2,20 @@
   <input
     v-model="editText"
     type="text"
-    @keyup.enter="editComplete(originEl)" />
-  <button
-    class="complete"
-    @click="editComplete(originEl)">
-    <i class="fas fa-check"></i>
-  </button>
-  <button
-    class="cancel"
-    @click="$emit('updateMode', false)">
-    <i class="fas fa-times"></i>
-  </button>
+    @keyup.enter="editComplete(originEl)"
+    @keyup.esc="$emit('updateMode', false)" />
+  <div class="edit_utils">
+    <button
+      class="complete"
+      @click="editComplete(originEl)">
+      <i class="fas fa-check"></i>
+    </button>
+    <button
+      class="cancel"
+      @click="$emit('updateMode', false)">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
 </template>
 
 <script>
@@ -35,35 +38,47 @@ export default {
             this.editText =''
         },
         async editComplete(El) {
-            El.title = this.editText
-            await this.$store.dispatch('todo/editTodo', El)
+            this.editText = this.editText.trim()
+            if (this.editText.length !== 0) {
+                El.title = this.editText
+                await this.$store.dispatch('todo/editTodo', El)
+                this.$emit('updateMode', false)
+            }
             this.editText = ''
-            this.$emit('updateMode', false)
         }
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 input{
     height: 30px;
-    width: calc(100% - 50px);
+    box-sizing: border-box;
+    height: 80%;
+    width: calc(100% - 20px);
     font-size: 18px;
     background-color: #ffffff;
-    /* background-color: #e7d3ee; */
     position: absolute;
     top: 50%;
-    margin-top: -15px;
-    left: 30px;
-    padding-left: 10px;
+    transform: translate(0, -50%);
+    left: 10px;
+    padding: 0 50px 0 10px;
+    z-index: 1;
 }
-button {
+.edit_utils {
     position: absolute;
-    font-size: 20px;
     top: 10px;
-    right: 17px;
-}
-.complete {
-    right: 40px;
+    bottom: 10px;
+    right: 10px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    z-index: 2;
+    .complete, .cancel {
+        font-size: 20px;
+    }
+    .cancel {
+        margin-left: 10px;
+    }
 }
 </style>

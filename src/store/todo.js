@@ -27,13 +27,12 @@ export default {
         addTodoEl(state, todoEl) {
             state.todoEls.push(todoEl)
         },
-        removeTodoEl(state, id) {
-            state.todoEls = state.todoEls.filter(El => El.id !== id)
+        removeTodoEl(state, todoEl) {
+            // const idx = state.todoEls.findIndex(El => El.id === todoEl.id)
+            // state.todoEls.splice(idx, 1)
+            state.todoEls = state.todoEls.filter(El => El.id !== todoEl.id)
+            
         },
-        // doneToggle(state, todoEl) {
-        //     const idx = state.todoEls.findIndex(El => El.id === todoEl.id)
-        //     state.todoEls[idx] = todoEl
-        // }
         editTodoEl(state, todoEl) {
             const idx = state.todoEls.findIndex(El => El.id === todoEl.id)
             state.todoEls[idx] = todoEl
@@ -79,7 +78,7 @@ export default {
                   'username': 'KimSiEun'
                 }
             })
-            commit('removeTodoEl', removeEl.id)
+            commit('removeTodoEl', removeEl)
         },
         async editTodo({ commit }, El) {
             const { data } = await axios({
